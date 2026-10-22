@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagramas de Secuencia – Restaurante</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f8fa;
+      padding: 2.5rem;
+      color: #222;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #888;
+      font-size: 0.85rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #dde1e7;
+      border-radius: 10px;
+      padding: 2rem 2.5rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .card h2 {
+      font-size: 1.05rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .card .desc {
+      font-size: 0.82rem;
+      color: #777;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Mermaid centrado */
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+    }
+
+    /*
+    ═══════════════════════════════════════════════
+      EDITAR DIAGRAMAS:
+      Busca el bloque <pre class="mermaid"> de cada
+      diagrama y modifica el texto directamente.
+      Sintaxis: https://mermaid.js.org/syntax/sequenceDiagram.html
+    ═══════════════════════════════════════════════
+    */
+  </style>
+</head>
+<body>
+
+<h1>Diagramas de Secuencia</h1>
+<p class="subtitle">Sistema de Gestión de Restaurante · Ingeniería de Software II · Sprint 1</p>
+
+
+<!-- ═══════════════════════════════════════════
+     DIAGRAMA 1 – LOGIN
+     Para editar: cambia los mensajes dentro del
+     bloque sequenceDiagram a continuación.
+═══════════════════════════════════════════ -->
+<div class="card">
+  <h2>Diagrama 1 – Inicio de Sesión</h2>
+  <p class="desc">
+    Flujo desde que el usuario abre el login hasta que accede a su panel según su rol.
+  </p>
+
+  <pre class="mermaid">
+sequenceDiagram
+    actor U  as Usuario
+    participant V  as login.html
+    participant C  as auth.py
+    participant FL as Flask-Login
+    participant M  as usuario.py
+    participant BD as BD
+
+    U  ->> V  : GET /login
+    V  -->> U : Muestra formulario
+
+    U  ->> C  : POST /login {email, password}
+
+    loop Busca en Administrador → Mesero → Cocina → Cliente
+        C  ->> BD : SELECT WHERE email=? AND activo=True
+        BD -->> C  : usuario | None
+    end
+
+    C  ->> M  : check_password(password)
+    M  -->> C  : True / False
+
+    alt Credenciales incorrectas
+        C  -->> U : flash "Credenciales incorrectas"
+    else Credenciales correctas
+        C  ->> FL : login_user(usuario)
+        FL -->> C  : Sesión creada (cookie)
+        C  -->> U : redirect → /dashboard
+
+        alt rol = mesero
+            U  ->> C  : GET /mesero/
+        else rol = cocina
+            U  ->> C  : GET /cocina/
+        else rol = admin
+            U  ->> C  : GET /admin/
+        end
+
+        C  -->> U : Panel de rol
+    end
+  </pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     DIAGRAMA 2 – NUEVO PEDIDO
+     Para editar: cambia los mensajes dentro del
+     bloque sequenceDiagram a continuación.
+═══════════════════════════════════════════ -->
+<div class="card">
+  <h2>Diagrama 2 – Creación de Pedido (Mesero)</h2>
+  <p class="desc">
+    Flujo desde que el mesero abre el formulario hasta que el pedido queda guardado en BD con estado "pendiente".
+  </p>
+
+  <pre class="mermaid">
+sequenceDiagram
+    actor Me as Mesero
+    participant V  as nuevo_pedido.html
+    participant C  as mesero.py
+    participant Mo as Modelos
+    participant ORM as SQLAlchemy
+    participant BD  as BD
+
+    Me ->> C  : GET /mesero/nuevo-pedido
+    C  ->> ORM : query mesas, categorías, productos
+    ORM ->> BD : SELECT disponibles y activos
+    BD  -->> ORM : listas de registros
+    ORM -->> C  : objetos Python
+    C  -->> V  : nuevo_pedido.html
+    V  -->> Me : Formulario con datos
+
+    Me ->> C  : POST {tipo, mesa_id, productos[], cantidades[]}
+
+    alt Sin productos seleccionados
+        C  -->> Me : flash "Debe agregar al menos un producto"
+    else Con productos
+        C  ->> ORM : Pedido(tipo, mesero_id) + flush()
+        ORM ->> BD  : INSERT INTO pedidos → retorna pedido.id
+
+        loop Por cada producto
+            C  ->> ORM : DetallePedido(pedido_id, prod_id, cant, subtotal)
+            ORM ->> BD  : INSERT INTO detalle_pedidos
+        end
+
+        opt tipo = salon AND mesa_id provisto
+            C  ->> ORM : PedidoMesa + mesa.estado = ocupada
+            ORM ->> BD  : INSERT pedido_mesa · UPDATE mesas
+        end
+
+        C  ->> ORM : calcular_total() + session.commit()
+        ORM ->> BD  : UPDATE pedidos SET total · COMMIT
+        BD  -->> C  : OK
+
+        C  -->> Me : flash "Pedido #N creado" + redirect /mesero/
+    end
+  </pre>
+</div>
+
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    sequence: {
+      actorMargin: 70,
+      messageMargin: 30,
+      mirrorActors: false,
+      useMaxWidth: true,
+      diagramMarginX: 20,
+      diagramMarginY: 20,
+      boxTextMargin: 6
+    }
+  });
+</script>
+
+</body>
+</html>

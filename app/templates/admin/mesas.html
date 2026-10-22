@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Mesas{% endblock %}
+
+{% block content %}
+<h4 class="fw-bold mb-4"><i class="bi bi-grid-3x3"></i> Mesas</h4>
+
+<div class="row g-3">
+  {% for mesa in mesas %}
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+    <div class="card text-center shadow-sm
+      {% if mesa.estado == 'disponible' %}border-success
+      {% else %}border-danger{% endif %}">
+      <div class="card-body py-3">
+        <i class="bi bi-grid-3x3-gap fs-3
+          {% if mesa.estado == 'disponible' %}text-success
+          {% else %}text-danger{% endif %}"></i>
+        <h5 class="card-title mt-1 mb-0">{{ mesa.numero }}</h5>
+        <small class="text-muted">{{ mesa.capacidad }} pers.</small>
+        <br>
+        <span class="badge mt-1
+          {% if mesa.estado == 'disponible' %}bg-success{% else %}bg-danger{% endif %}">
+          {{ mesa.estado }}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12 text-center text-muted py-4">No hay mesas registradas.</div>
+  {% endfor %}
+</div>
+{% endblock %}

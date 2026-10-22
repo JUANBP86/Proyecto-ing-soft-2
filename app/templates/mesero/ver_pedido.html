@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Pedido #{{ pedido.id }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="fw-bold mb-0">
+    <i class="bi bi-receipt"></i> Pedido #{{ pedido.id }}
+  </h4>
+  <a href="{{ url_for('mesero.index') }}" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left"></i> Volver
+  </a>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">Información del pedido</div>
+      <div class="card-body">
+        <p><strong>Estado:</strong>
+          <span class="badge badge-{{ pedido.estado }} rounded-pill ms-1">
+            {{ pedido.estado.replace('_', ' ') }}
+          </span>
+        </p>
+        <p><strong>Tipo:</strong> {{ 'Salón' if pedido.tipo == 'salon' else 'Para llevar' }}</p>
+        {% if pedido.mesa %}
+        <p><strong>Mesa:</strong> {{ pedido.mesa.numero }}</p>
+        {% endif %}
+        <p><strong>Mesero:</strong> {{ pedido.mesero.nombre }}</p>
+        <p><strong>Hora:</strong> {{ pedido.created_at.strftime('%d/%m/%Y %H:%M') }}</p>
+        {% if pedido.observaciones %}
+        <p><strong>Observaciones:</strong> {{ pedido.observaciones }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">Detalle de productos</div>
+      <div class="card-body p-0">
+        <table class="table table-sm mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Producto</th>
+              <th class="text-center">Cant.</th>
+              <th class="text-end">Precio</th>
+              <th class="text-end">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for d in pedido.detalles %}
+            <tr>
+              <td>
+                {{ d.producto.nombre }}
+                {% if d.nota %}
+                  <br><small class="text-muted">{{ d.nota }}</small>
+                {% endif %}
+              </td>
+              <td class="text-center">{{ d.cantidad }}</td>
+              <td class="text-end">${{ "%.2f"|format(d.precio_unit) }}</td>
+              <td class="text-end">${{ "%.2f"|format(d.subtotal) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr class="table-light fw-bold">
+              <td colspan="3" class="text-end">Total</td>
+              <td class="text-end">${{ "%.2f"|format(pedido.total) }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    {% if pedido.estado == 'listo' %}
+    <form method="POST"
+          action="{{ url_for('mesero.entregar_pedido', pedido_id=pedido.id) }}"
+          class="mt-3">
+      <button type="submit" class="btn btn-success w-100">
+        <i class="bi bi-check2-circle"></i> Marcar como entregado
+      </button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

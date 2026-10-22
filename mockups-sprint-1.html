@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mockups - PoliRestaurante - Sprint 1</title>
+  <style>
+    :root {
+      --ink: #20252b;
+      --muted: #69737d;
+      --line: #dce2e7;
+      --paper: #f5f7f8;
+      --white: #ffffff;
+      --accent: #f4b400;
+      --accent-dark: #a66d00;
+      --navy: #202830;
+      --green: #198754;
+      --blue: #0d6efd;
+      --red: #dc3545;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #e9edf0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .page-header {
+      padding: 34px max(24px, calc((100% - 1180px) / 2));
+      color: var(--white);
+      background: var(--navy);
+    }
+
+    .page-header h1 { margin: 0 0 8px; font-size: 28px; }
+    .page-header p { margin: 0; color: #c9d1d8; }
+    .gallery {
+      display: grid;
+      gap: 28px;
+      max-width: 1180px;
+      margin: 28px auto 60px;
+      padding: 0 24px;
+    }
+
+    .mockup {
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 28px rgba(32, 40, 48, .10);
+    }
+
+    .mockup-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mockup-label h2 { margin: 0; font-size: 17px; }
+    .mockup-label span { color: var(--muted); font-size: 12px; }
+    .app { min-height: 340px; background: var(--paper); }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 52px;
+      padding: 0 22px;
+      color: var(--white);
+      background: var(--navy);
+    }
+
+    .brand { font-weight: 700; letter-spacing: .4px; }
+    .user { color: #c9d1d8; font-size: 12px; }
+    .workspace { display: flex; min-height: 288px; }
+    .side {
+      width: 178px;
+      padding: 22px 14px;
+      color: #d6dde3;
+      background: #29323a;
+    }
+    .side small { display: block; margin: 0 8px 8px; color: #8f9ba5; font-size: 10px; text-transform: uppercase; }
+    .side div { padding: 9px 8px; font-size: 12px; }
+    .side .active { color: #1d2329; background: var(--accent); }
+    .content { flex: 1; padding: 25px; }
+    .content h3 { margin: 0 0 18px; font-size: 20px; }
+    .login-app { display: grid; place-items: center; min-height: 340px; }
+    .login-card { width: min(360px, 90%); padding: 28px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 8px 20px rgba(32, 40, 48, .08); }
+    .login-card h3 { margin: 10px 0 4px; text-align: center; }
+    .login-card p { margin: 0 0 22px; color: var(--muted); text-align: center; font-size: 12px; }
+    .logo { margin: auto; color: var(--accent-dark); text-align: center; font-size: 34px; }
+    label { display: block; margin: 12px 0 5px; color: var(--muted); font-size: 12px; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #cbd3d9; font: inherit; }
+    button, .button { display: inline-block; padding: 10px 15px; border: 0; color: #272015; background: var(--accent); font-weight: 700; }
+    .full { width: 100%; margin-top: 20px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+    .stat { padding: 17px; color: var(--white); background: var(--blue); }
+    .stat:first-child { color: #2d2512; background: var(--accent); }
+    .stat:last-child { background: var(--green); }
+    .stat strong { display: block; font-size: 25px; }
+    .stat span { font-size: 11px; }
+    .actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .action { padding: 22px 10px; text-align: center; background: var(--white); border: 1px solid var(--line); }
+    .action b { display: block; margin-top: 8px; font-size: 12px; }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .toolbar h3 { margin: 0; }
+    table { width: 100%; border-collapse: collapse; background: var(--white); font-size: 12px; }
+    th, td { padding: 11px 12px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { color: var(--white); background: var(--navy); font-size: 11px; }
+    .badge { display: inline-block; padding: 4px 7px; color: var(--white); background: var(--green); font-size: 10px; }
+    .badge.gray { color: var(--ink); background: #dce2e7; }
+    .product-price { text-align: right; }
+    .tables { display: grid; grid-template-columns: repeat(5, minmax(80px, 1fr)); gap: 12px; }
+    .table-card { padding: 15px 8px; text-align: center; background: var(--white); border: 2px solid var(--green); }
+    .table-card.busy { border-color: var(--red); }
+    .table-icon { color: var(--green); font-size: 25px; }
+    .busy .table-icon { color: var(--red); }
+    .table-card b { display: block; margin: 5px 0; font-size: 16px; }
+    .table-card small { color: var(--muted); font-size: 10px; }
+    .table-card .badge { margin-top: 8px; }
+
+    @media (max-width: 700px) {
+      .workspace { display: block; }
+      .side { width: auto; min-height: 0; }
+      .side div { display: inline-block; }
+      .stats, .actions { grid-template-columns: 1fr; }
+      .tables { grid-template-columns: repeat(2, 1fr); }
+      .app { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <h1>Mockups del Sprint 1</h1>
+    <p>PoliRestaurante | Acceso y configuración inicial del sistema</p>
+  </header>
+
+  <main class="gallery">
+    <section class="mockup">
+      <div class="mockup-label"><h2>Mockup 1. Inicio de sesión</h2><span>HU-01</span></div>
+      <div class="app login-app">
+        <div class="login-card">
+          <div class="logo">&#9733;</div>
+          <h3>PoliRestaurante</h3>
+          <p>Sistema de Gestión de Pedidos</p>
+          <label>Correo electrónico</label><input type="text" placeholder="usuario@ejemplo.com">
+          <label>Contraseña</label><input type="password" placeholder="••••••••">
+          <button class="full">Ingresar</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="mockup">
+      <div class="mockup-label"><h2>Mockup 2. Dashboard del administrador</h2><span>HU-02 / HU-03 / HU-04</span></div>
+      <div class="app">
+        <div class="nav"><span class="brand">PoliRestaurante</span><span class="user">Administrador | Salir</span></div>
+        <div class="workspace"><aside class="side"><small>Administración</small><div class="active">Dashboard</div><div>Usuarios</div><div>Productos</div><div>Mesas</div></aside><div class="content"><h3>Dashboard</h3><div class="stats"><div class="stat"><strong>24</strong><span>Pedidos totales</span></div><div class="stat"><strong>8</strong><span>Pedidos hoy</span></div><div class="stat"><strong>5</strong><span>En curso ahora</span></div></div><div class="actions"><div class="action">&#128101;<b>Gestionar usuarios</b></div><div class="action">&#127860;<b>Gestionar productos</b></div><div class="action">&#9638;<b>Gestionar mesas</b></div></div></div></div>
+      </div>
+    </section>
+
+    <section class="mockup">
+      <div class="mockup-label"><h2>Mockup 3. Gestión de usuarios</h2><span>HU-02</span></div>
+      <div class="app"><div class="nav"><span class="brand">PoliRestaurante</span><span class="user">Administrador | Salir</span></div><div class="workspace"><aside class="side"><small>Administración</small><div>Dashboard</div><div class="active">Usuarios</div><div>Productos</div><div>Mesas</div></aside><div class="content"><div class="toolbar"><h3>Usuarios</h3><button>+ Nuevo usuario</button></div><table><thead><tr><th>#</th><th>Nombre</th><th>Email</th><th>Rol</th><th>Estado</th></tr></thead><tbody><tr><td>1</td><td>Administrador</td><td>admin@polirestaurante.com</td><td>admin</td><td><span class="badge">Activo</span></td></tr><tr><td>2</td><td>Laura Gómez</td><td>laura@correo.com</td><td>mesero</td><td><span class="badge">Activo</span></td></tr><tr><td>3</td><td>Carlos Ruiz</td><td>carlos@correo.com</td><td>cocina</td><td><span class="badge gray">Inactivo</span></td></tr></tbody></table></div></div></div>
+    </section>
+
+    <section class="mockup">
+      <div class="mockup-label"><h2>Mockup 4. Nuevo usuario</h2><span>HU-02</span></div>
+      <div class="app"><div class="nav"><span class="brand">PoliRestaurante</span><span class="user">Administrador | Salir</span></div><div class="workspace"><aside class="side"><small>Administración</small><div>Dashboard</div><div class="active">Usuarios</div><div>Productos</div><div>Mesas</div></aside><div class="content"><h3>Crear nuevo usuario</h3><div style="max-width:560px;background:#fff;border:1px solid var(--line);padding:20px"><label>Nombre completo</label><input type="text" placeholder="Nombre del usuario"><label>Correo electrónico</label><input type="email" placeholder="usuario@correo.com"><label>Contraseña</label><input type="password" placeholder="Contraseña segura"><label>Rol</label><select><option>Seleccione un rol</option><option>Administrador</option><option>Mesero</option><option>Cocina</option><option>Cliente</option></select><button style="margin-top:20px">Crear usuario</button></div></div></div></div>
+    </section>
+
+    <section class="mockup">
+      <div class="mockup-label"><h2>Mockup 5. Gestión de productos</h2><span>HU-03</span></div>
+      <div class="app"><div class="nav"><span class="brand">PoliRestaurante</span><span class="user">Administrador | Salir</span></div><div class="workspace"><aside class="side"><small>Administración</small><div>Dashboard</div><div>Usuarios</div><div class="active">Productos</div><div>Mesas</div></aside><div class="content"><div class="toolbar"><h3>Productos</h3><button>+ Nuevo producto</button></div><table><thead><tr><th>#</th><th>Nombre</th><th>Categoría</th><th class="product-price">Precio</th><th>Disponible</th></tr></thead><tbody><tr><td>1</td><td><b>Hamburguesa Clásica</b><br><span style="color:var(--muted);font-size:10px">Carne, lechuga y tomate</span></td><td>Hamburguesas</td><td class="product-price">$8.50</td><td><span class="badge">Sí</span></td></tr><tr><td>2</td><td><b>Jugo de naranja</b></td><td>Bebidas</td><td class="product-price">$3.00</td><td><span class="badge">Sí</span></td></tr><tr><td>3</td><td><b>Papas grandes</b></td><td>Acompañamientos</td><td class="product-price">$4.50</td><td><span class="badge gray">No</span></td></tr></tbody></table></div></div></div>
+    </section>
+
+    <section class="mockup">
+      <div class="mockup-label"><h2>Mockup 6. Nuevo producto</h2><span>HU-03</span></div>
+      <div class="app"><div class="nav"><span class="brand">PoliRestaurante</span><span class="user">Administrador | Salir</span></div><div class="workspace"><aside class="side"><small>Administración</small><div>Dashboard</div><div>Usuarios</div><div class="active">Productos</div><div>Mesas</div></aside><div class="content"><h3>Agregar producto</h3><div style="max-width:560px;background:#fff;border:1px solid var(--line);padding:20px"><label>Nombre del producto</label><input type="text" placeholder="Ej. Hamburguesa especial"><label>Descripción</label><input type="text" placeholder="Descripción breve"><label>Precio</label><input type="text" placeholder="$ 0.00"><label>Categoría</label><select><option>Seleccione una categoría</option><option>Hamburguesas</option><option>Bebidas</option><option>Acompañamientos</option></select><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" style="width:auto"> Producto disponible</label><button style="margin-top:12px">Guardar producto</button></div></div></div></div>
+    </section>
+
+    <section class="mockup">
+      <div class="mockup-label"><h2>Mockup 7. Estado de mesas</h2><span>HU-04</span></div>
+      <div class="app"><div class="nav"><span class="brand">PoliRestaurante</span><span class="user">Administrador | Salir</span></div><div class="workspace"><aside class="side"><small>Administración</small><div>Dashboard</div><div>Usuarios</div><div>Productos</div><div class="active">Mesas</div></aside><div class="content"><h3>Mesas</h3><div class="tables"><div class="table-card"><div class="table-icon">&#9638;</div><b>1</b><small>2 personas</small><br><span class="badge">Disponible</span></div><div class="table-card busy"><div class="table-icon">&#9638;</div><b>2</b><small>4 personas</small><br><span class="badge" style="background:var(--red)">Ocupada</span></div><div class="table-card"><div class="table-icon">&#9638;</div><b>3</b><small>4 personas</small><br><span class="badge">Disponible</span></div><div class="table-card"><div class="table-icon">&#9638;</div><b>4</b><small>6 personas</small><br><span class="badge">Disponible</span></div><div class="table-card busy"><div class="table-icon">&#9638;</div><b>5</b><small>6 personas</small><br><span class="badge" style="background:var(--red)">Ocupada</span></div></div></div></div></div>
+    </section>
+  </main>
+</body>
+</html>
